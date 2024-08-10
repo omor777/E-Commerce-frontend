@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -28,6 +27,12 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../features/auth/authApi";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { app } from "../../firebase/firebase.config";
+const provider = new GoogleAuthProvider();
+const auth = getAuth(app);
+
+//TODO: Google login
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,6 +63,15 @@ const Register = () => {
     // console.log(data);
     dispatch(registerUser(data));
     // reset();
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -249,6 +263,7 @@ const Register = () => {
           </Divider>
           <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
             <Button
+              onClick={handleGoogleLogin}
               sx={{ flexGrow: 1 }}
               variant="contained"
               color="error"
