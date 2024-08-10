@@ -7,14 +7,18 @@ const Header = () => {
         <Box
           sx={{ display: "flex", alignItems: "center", justifyContent: "end" }}
         >
-          <Button component={NavLink} to="/register"  sx={{ color: "#fff" }}>Register</Button>
+          <Button component={NavLink} to="/register" sx={{ color: "#fff" }}>
+            Register
+          </Button>
           <Divider
             orientation="vertical"
             variant="middle"
             sx={{ bgcolor: "#fff" }}
             flexItem
           />
-          <Button sx={{ color: "#fff" }}>Login</Button>
+          <Button component={NavLink} to="/login" sx={{ color: "#fff" }}>
+            Login
+          </Button>
         </Box>
       </Container>
     </Box>
