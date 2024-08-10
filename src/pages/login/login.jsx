@@ -14,9 +14,33 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/visibility";
 import Google from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import { useForm } from "react-hook-form";
+import { validateEmail } from "../../utils/validateEmail";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../features/auth/authApi";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth);
+  console.log(errors);
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    dispatch(loginUser(data));
+  };
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -42,6 +66,8 @@ const Login = () => {
           Sing In
         </Typography>
         <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
           style={{
             display: "flex",
             flexDirection: "column",
@@ -49,6 +75,18 @@ const Login = () => {
           }}
         >
           <TextField
+            {...register("email", {
+              required: {
+                value: true,
+                message: "Please enter your email!",
+              },
+              validate: (v) => {
+                const result = validateEmail(v);
+                return result ? null : "Please enter valid email!";
+              },
+            })}
+            error={errors && errors.email ? true : false}
+            helperText={errors && errors.email ? errors.email.message : ""}
             label="Email"
             InputProps={{
               endAdornment: (
@@ -60,6 +98,16 @@ const Login = () => {
           />
 
           <TextField
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Please enter your password!",
+              },
+            })}
+            error={errors && errors.password ? true : false}
+            helperText={
+              errors && errors.password ? errors.password.message : ""
+            }
             type={showPassword ? "text" : "password"}
             label="Password"
             InputProps={{
@@ -73,7 +121,13 @@ const Login = () => {
             }}
           />
 
-          <Button variant="contained">Sing In</Button>
+          <Button
+            disabled={user.loading === "pending"}
+            type="submit"
+            variant="contained"
+          >
+            Sing In
+          </Button>
           <Divider variant="middle">
             <Typography variant="subtitle2">OR</Typography>
           </Divider>

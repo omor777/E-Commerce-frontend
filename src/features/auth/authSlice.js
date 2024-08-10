@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./authApi";
-import error from "../../../../server/utils/error";
+import { loginUser, registerUser } from "./authApi";
 
 const initialState = {
   user: null,
   loading: "idle",
   error: null,
+  token: null,
+  message: null,
 };
 
 const authSlice = createSlice({
@@ -24,7 +25,22 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = "failed";
-        state.error = action.payload;
+        state.error = action.error?.message || "Failed to register";
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.user = action.payload?.data || null;
+        state.token = action.payload?.token || null;
+        state.message = action.payload?.message || null;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.error?.message || "Failed to login";
       });
   },
 });
