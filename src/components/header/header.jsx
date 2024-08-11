@@ -2,7 +2,7 @@ import { Box, Button, Container, Divider } from "@mui/material";
 import { NavLink } from "react-router-dom";
 const Header = () => {
   return (
-    <Box sx={{ bgcolor: "#2196f3" }}>
+    <Box sx={{ bgcolor: "primary.main" }}>
       <Container maxWidth="xl">
         <Box
           sx={{ display: "flex", alignItems: "center", justifyContent: "end" }}
