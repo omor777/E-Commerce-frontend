@@ -23,7 +23,7 @@ const AdminLayout = () => {
         <Box
           sx={{
             gridColumn: { lg: "3 / span 10" },
-            bgcolor: "info.main",
+
             ml: { lg: 2 },
             my: { lg: 2 },
           }}
