@@ -3,6 +3,8 @@ import Root from "../layouts/root";
 import Register from "../pages/register/register";
 import Login from "../pages/login/login";
 import Home from "../pages/home/home";
+import CartPage from "../pages/cart/cart";
+import AddProduct from "../pages/admin/addProduct/addProduct";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -21,7 +23,15 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
-      {},
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      // admin related routes
+      {
+        path: "/add-product",
+        element: <AddProduct />,
+      },
     ],
   },
 ]);

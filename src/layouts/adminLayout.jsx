@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/header/header";
 import Navbar from "../components/navbar/navbar";
 import { Box, Container } from "@mui/material";
+import AdminSidebar from "../components/admin/sidebar/adminSidebar";
 
 const AdminLayout = () => {
   return (
@@ -24,8 +25,9 @@ const AdminLayout = () => {
           sx={{
             gridColumn: { lg: "3 / span 10" },
 
-            ml: { lg: 2 },
-            my: { lg: 2 },
+            pl: { lg: 2 },
+            py: { lg: 2 },
+            bgcolor: "#efefef",
           }}
         >
           <Outlet />
@@ -34,13 +36,13 @@ const AdminLayout = () => {
           sx={{
             gridColumn: { lg: "1 / span 2" },
             gridRow: { lg: "3 / span 1" },
-            bgcolor: "primary.main",
+            bgcolor: "grey.100",
             display: { xs: "none", lg: "block" },
             width: 300,
-            p: { lg: 1 },
+            py: { lg: 1 },
           }}
         >
-          sidebar
+          <AdminSidebar />
         </Box>
         <Box sx={{ bgcolor: "error.main", gridColumn: { lg: "1/ span 12" } }}>
           Footer

@@ -15,7 +15,17 @@ import { NavLink } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../features/cart/cartSlice";
+
 const FeaturedProduct = () => {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (id) => {
+    dispatch(addToCart(id))
+  };
+
   return (
     <Box>
       <Box>
@@ -134,7 +144,11 @@ const FeaturedProduct = () => {
                 </Stack>
               </CardContent>
               <CardActions disableSpacing>
-                <Button endIcon={<LocalMallIcon />} variant="contained">
+                <Button
+                  onClick={() => handleAddToCart(index + 1)}
+                  endIcon={<LocalMallIcon />}
+                  variant="contained"
+                >
                   Add to cart
                 </Button>
                 <Stack ml="auto" direction="row">

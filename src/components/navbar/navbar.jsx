@@ -17,9 +17,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MoreVertSharpIcon from "@mui/icons-material/MoreVertSharp";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => {
-  console.log(theme);
   return {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -66,6 +67,10 @@ const Navbar = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const { items } = useSelector((state) => state.cart);
+
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -117,7 +122,7 @@ const Navbar = () => {
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        variant: "top",
+        vertical: "top",
         horizontal: "right",
       }}
       open={isMobileMenuOpen}
@@ -152,6 +157,7 @@ const Navbar = () => {
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
+
         <Typography>Cart</Typography>
       </MenuItem>
 
@@ -182,11 +188,20 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
             variant="h6"
             noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            component={Link}
+            to="/"
+            sx={{
+              display: {
+                xs: "none",
+                sm: "block",
+                textDecoration: "none",
+              },
+            }}
+            color="text.primary"
           >
             MUI
           </Typography>
@@ -205,9 +220,14 @@ const Navbar = () => {
             <IconButton color="inherit" size="large">
               <FavoriteBorderIcon />
             </IconButton>
-            <IconButton size="large" color="inherit">
+            <IconButton
+              component={Link}
+              to="/cart"
+              size="large"
+              color="inherit"
+            >
               <Badge
-                badgeContent={4}
+                badgeContent={items.length}
                 color="error"
                 anchorOrigin={{ vertical: "top", horizontal: "left" }}
               >
