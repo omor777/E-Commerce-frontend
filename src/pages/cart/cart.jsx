@@ -19,7 +19,9 @@ import {
   addQuantityByButton,
   removeQuantityByButton,
   updateQuantityByInput,
+  removeProductFromCart,
 } from "../../features/cart/cartSlice";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const carts = useSelector(getCartProducts);
@@ -36,8 +38,13 @@ const CartPage = () => {
   const handleChangeQuantity = (e, id) => {
     const value = parseInt(e.target.value);
     if (isNaN(value)) return;
-    
+
     dispatch(updateQuantityByInput({ id, value }));
+  };
+
+  const handleRemoveProductFromCart = (id) => {
+    dispatch(removeProductFromCart(id));
+    toast.success("Remove product form cart!");
   };
 
   return (
@@ -93,7 +100,7 @@ const CartPage = () => {
                     {regular_price * quantity}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton>
+                    <IconButton onClick={() => handleRemoveProductFromCart(id)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
