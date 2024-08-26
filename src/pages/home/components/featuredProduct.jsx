@@ -18,13 +18,20 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../features/cart/cartSlice";
+import { useGetProductsQuery } from "../../../features/products/productsApi";
+import { toast } from "react-toastify";
 
 const FeaturedProduct = () => {
   const dispatch = useDispatch();
 
-  const handleAddToCart = (id) => {
-    dispatch(addToCart(id))
+  const { data, isLoading } = useGetProductsQuery();
+
+  const handleAddToCart = ({ id, name, image, regular_price }) => {
+    dispatch(addToCart({ id, name, image, regular_price }));
+    toast.success("Product add to cart");
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Box>
@@ -103,66 +110,74 @@ const FeaturedProduct = () => {
       </Box>
 
       <Grid container mt={2} spacing={3}>
-        {Array.from(Array(6)).map((_, index) => (
-          <Grid item key={index} sm={6} md={4}>
-            <Card>
-              <CardMedia
-                sx={{ height: 230 }}
-                image="https://img.freepik.com/free-vector/colorful-flat-rainbow-run-marathon-t-shirt_742173-14080.jpg?size=626&ext=jpg&ga=GA1.1.1128041553.1709286366&semt=ais_hybrid"
-              />
-              <CardContent>
-                <Stack spacing={1.5}>
-                  <Stack>
-                    <Typography variant="h6" color="text.primary">
-                      DRESS THE STLILETTD
-                    </Typography>
-                    <Typography color="text.secondary">
-                      Women&apos;s Fashion
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" justifyContent="space-between">
-                    <Box>
-                      <Typography
-                        variant="h5"
-                        fontWeight="bold"
-                        color="info.main"
-                      >
-                        $49.00
-                      </Typography>
-                      <Typography
-                        variant="text.secondary"
-                        sx={{ textDecoration: "line-through" }}
-                      >
-                        $65.00
-                      </Typography>
-                    </Box>
-                    <Typography color="success.main">In Stock</Typography>
-                  </Stack>
-                  <Box>
-                    <Rating defaultValue={4} />
-                  </Box>
-                </Stack>
-              </CardContent>
-              <CardActions disableSpacing>
-                <Button
-                  onClick={() => handleAddToCart(index + 1)}
-                  endIcon={<LocalMallIcon />}
-                  variant="contained"
-                >
-                  Add to cart
-                </Button>
-                <Stack ml="auto" direction="row">
-                  <IconButton>
-                    <FavoriteBorderIcon />
-                  </IconButton>
-                  <IconButton>
-                    <RemoveRedEyeIcon />
-                  </IconButton>
-                </Stack>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
+        {data?.products?.map(
+          ({ _id, image, regular_price, name, stock_status }) => {
+            return (
+              <Grid item key={_id} sm={6} md={4}>
+                <Card>
+                  <CardMedia sx={{ height: 230 }} image={image} />
+                  <CardContent>
+                    <Stack spacing={1.5}>
+                      <Stack>
+                        <Typography variant="h6" color="text.primary">
+                          DRESS THE STLILETTD
+                        </Typography>
+                        <Typography color="text.secondary">
+                          Women&apos;s Fashion
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" justifyContent="space-between">
+                        <Box>
+                          <Typography
+                            variant="h5"
+                            fontWeight="bold"
+                            color="info.main"
+                          >
+                            ${regular_price}
+                          </Typography>
+                          <Typography
+                            variant="text.secondary"
+                            sx={{ textDecoration: "line-through" }}
+                          >
+                            $65.00
+                          </Typography>
+                        </Box>
+                        <Typography
+                          sx={{ textTransform: "capitalize" }}
+                          color="success.main"
+                        >
+                          {stock_status}
+                        </Typography>
+                      </Stack>
+                      <Box>
+                        <Rating defaultValue={4} />
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    <Button
+                      onClick={() =>
+                        handleAddToCart({ id: _id, image, name, regular_price })
+                      }
+                      endIcon={<LocalMallIcon />}
+                      variant="contained"
+                    >
+                      Add to cart
+                    </Button>
+                    <Stack ml="auto" direction="row">
+                      <IconButton>
+                        <FavoriteBorderIcon />
+                      </IconButton>
+                      <IconButton>
+                        <RemoveRedEyeIcon />
+                      </IconButton>
+                    </Stack>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          }
+        )}
       </Grid>
     </Box>
   );

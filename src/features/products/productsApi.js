@@ -10,9 +10,12 @@ const productsApi = rootApi.injectEndpoints({
         };
       },
       providesTags: (result) =>
-        result
+        result.success
           ? [
-              ...result.map(({ _id }) => ({ type: "Products", id: _id })),
+              ...result.products.map(({ _id }) => ({
+                type: "Products",
+                id: _id,
+              })),
               { type: "Products", id: "LIST" },
             ]
           : [{ type: "Products", id: "LIST" }],

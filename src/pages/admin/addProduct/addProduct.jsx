@@ -37,7 +37,7 @@ const AddProduct = () => {
 
   const [addProductToDb, { isLoading }] = useAddProductMutation();
 
-  const { handleSubmit, register, formState } = useForm({
+  const { handleSubmit, register } = useForm({
     defaultValues: {
       name: "",
       description: "",
@@ -163,7 +163,7 @@ const AddProduct = () => {
               labelPlacement="start"
             />
           </FormGroup>
-          <Button type="submit" variant="contained">
+          <Button disabled={isLoading} type="submit" variant="contained">
             Add Product
           </Button>
 
